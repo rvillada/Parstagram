@@ -9,17 +9,30 @@
     android:layout_height="match_parent"
     tools:context=".FeedActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPosts"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/btnFeed"
+        android:layout_below="@+id/btnLogout"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="-1dp"
-        android:layout_marginBottom="0dp"
-        android:padding="8dp" />
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPosts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="-1dp"
+            android:layout_marginBottom="0dp"
+            android:padding="8dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ImageButton
         android:id="@+id/btnCompose"
@@ -41,4 +54,13 @@
         android:layout_marginStart="82dp"
         android:layout_marginBottom="13dp"
         android:background="@drawable/instagram_home_filled_24" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="0dp"
+        android:text="Logout" />
+
 </RelativeLayout>

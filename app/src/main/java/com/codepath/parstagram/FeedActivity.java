@@ -3,16 +3,19 @@ package com.codepath.parstagram;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,8 @@ public class FeedActivity extends AppCompatActivity {
     protected List<Post> allPosts;
     private RecyclerView rvPosts;
     private ImageButton btnCompose;
+    private SwipeRefreshLayout swipeContainer;
+    private Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +37,40 @@ public class FeedActivity extends AppCompatActivity {
 
         rvPosts = findViewById(R.id.rvPosts);
         btnCompose = findViewById(R.id.btnCompose);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        btnLogout = findViewById(R.id.btnLogout);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                queryPosts();
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
 
         btnCompose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FeedActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                Intent intent = new Intent(FeedActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -77,9 +111,14 @@ public class FeedActivity extends AppCompatActivity {
                     Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
                 }
 
+                allPosts.clear();
+                adapter.clear();
+
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
+
+                swipeContainer.setRefreshing(false);
             }
         });
     }

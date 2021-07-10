@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42; //arbitrary value
-    private EditText etDescrtiption;
+    private EditText etDescription;
     private Button btnCaptureImage;
     private ImageView ivPostImage;
     private Button btnSubmit;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        etDescrtiption = findViewById(R.id.etDescription);
+        etDescription = findViewById(R.id.etDescription);
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
         btnSubmit = findViewById(R.id.btnSubmit);
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              String description = etDescrtiption.getText().toString();
+              String description = etDescription.getText().toString();
               if (description.isEmpty()) {
                   Toast.makeText(MainActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT).show();
                   return;
@@ -150,8 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "Error while saving", e);
                     Toast.makeText(MainActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG, "Post save was successful!");
-                etDescrtiption.setText("");
+                etDescription.setText("");
                 ivPostImage.setImageResource(0);
             }
         });
